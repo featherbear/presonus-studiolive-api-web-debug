@@ -3,6 +3,8 @@
   import { onMount } from "svelte";
 
   import type { Socket } from "socket.io-client";
+  import Row from "../components/payload/Row.svelte";
+  import type Payload from "../components/payload/types/Payload";
   let client: Socket;
 
   let messages = [];
@@ -14,9 +16,15 @@
     );
 
     console.log("Ready");
-    client.on("p", function (data: { code: string; data: any }) {
+    client.on("p", function (data: Payload) {
       updateType(data.code);
-      messages = [data, ...messages];
+      messages = [
+        {
+          ...data,
+          data: JSON.parse(data.data),
+        },
+        ...messages,
+      ];
     });
   });
 
@@ -56,9 +64,7 @@
 </div>
 
 {#each messages.filter(({ code }) => activeTypes.includes(code)) as data}
-  <pre>
-    {JSON.stringify(data, null, 2)}
-  </pre>
+  <Row {data} />
 {/each}
 
 <style lang="scss">

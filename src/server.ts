@@ -6,6 +6,7 @@ import * as sapper from '@sapper/server';
 import { Server as HTTPServer } from 'http'
 import { Server as SocketIOServer } from 'socket.io'
 import { Client as SLAPI } from 'presonus-studiolive-api'
+import type Payload from './components/payload/types/Payload';
 
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
@@ -25,7 +26,8 @@ app
 let client = new SLAPI("192.168.0.19")
 
 client.on('data', (data) => {
-    io.emit('p', data)
+    let payload: Payload = { code: data.code, data: JSON.stringify(data), timestamp: new Date().getTime() }
+    io.emit('p', payload)
 })
 
 server.listen(Number(PORT), '0.0.0.0', () => {
