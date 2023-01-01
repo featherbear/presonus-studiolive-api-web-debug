@@ -3,8 +3,6 @@
   import Nav from "../components/Nav.svelte";
 
   export let segment: string;
-
-
 </script>
 
 <Nav {segment} />
@@ -13,7 +11,11 @@
   <slot />
 </main>
 
-<style>
+<style global lang="scss">
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+
   main {
     position: relative;
     max-width: 56em;

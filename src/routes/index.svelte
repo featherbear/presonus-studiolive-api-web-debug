@@ -61,6 +61,32 @@
   <Row {data} />
 {/each}
 
+
+
+<div class="card w-96 bg-base-100 shadow-xl">
+  <figure><img src="https://placeimg.com/400/225/arch" alt="Shoes" /></figure>
+  <div class="card-body">
+    <h2 class="card-title">Shoes!</h2>
+    <p>If a dog chews shoes whose shoes does he choose?</p>
+    <div class="card-actions justify-end">
+      <button class="btn btn-primary">Buy Now</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="form-control">
+  <label class="label">
+    <span class="label-text">Your Email</span>
+  </label>
+  <label class="input-group">
+    <span>Email</span>
+    <input type="text" placeholder="info@site.com" class="input input-bordered" />
+  </label>
+</div>
+
+
+
 <style lang="scss">
   div.filters {
     span {

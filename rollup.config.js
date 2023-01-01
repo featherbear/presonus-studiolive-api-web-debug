@@ -29,13 +29,13 @@ export default {
 		plugins: [
 			replace({
 				preventAssignment: true,
-				values:{
+				values: {
 					'process.browser': true,
 					'process.env.NODE_ENV': JSON.stringify(mode)
 				},
 			}),
 			svelte({
-				preprocess: sveltePreprocess({ sourceMap: dev }),
+				preprocess: sveltePreprocess({ sourceMap: dev, postcss: true }),
 				compilerOptions: {
 					dev,
 					hydratable: true
@@ -85,13 +85,13 @@ export default {
 		plugins: [
 			replace({
 				preventAssignment: true,
-				values:{
+				values: {
 					'process.browser': false,
 					'process.env.NODE_ENV': JSON.stringify(mode)
 				},
 			}),
 			svelte({
-				preprocess: sveltePreprocess({ sourceMap: dev }),
+				preprocess: sveltePreprocess({ sourceMap: dev, postcss: true }),
 				compilerOptions: {
 					dev,
 					generate: 'ssr',
@@ -123,7 +123,7 @@ export default {
 			resolve(),
 			replace({
 				preventAssignment: true,
-				values:{
+				values: {
 					'process.browser': true,
 					'process.env.NODE_ENV': JSON.stringify(mode)
 				},
