@@ -47,14 +47,8 @@
   <title>Sapper project template</title>
 </svelte:head>
 
-<h1>Great success!</h1>
-
-<figure>
-  <img alt="Success Kid" src={successkid} />
-  <figcaption>Have fun with Sapper!</figcaption>
-</figure>
-
 <div class="filters">
+  <div>Payload Filters</div>
   {#each types as code}
     <span
       on:click={() => toggleCode(code)}

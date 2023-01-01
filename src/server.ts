@@ -33,6 +33,6 @@ client.on('data', (data) => {
 server.listen(Number(PORT), HOST ?? '0.0.0.0', () => {
     console.log("Web server started")
     client.connect().then(() => {
-        console.log("Connected to StudioLive console")
+        console.log(`Connected to ${client.state.get('global.devicename')} (${client.state.get('global.mixer_serial')})`)
     })
 });
