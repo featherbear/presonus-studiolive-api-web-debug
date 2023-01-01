@@ -1,6 +1,5 @@
 <script lang="ts">
-  import successkid from "images/successkid.jpg";
-  import { onMount } from "svelte";
+  import { onMount, setContext } from "svelte";
 
   import type { Socket } from "socket.io-client";
   import Row from "../components/payload/Row.svelte";
@@ -28,6 +27,8 @@
     });
   });
 
+  import { UIState } from "../components/UIState";
+
   let types = [];
   function updateType(type: string) {
     if (types.includes(type)) return;
@@ -47,56 +48,54 @@
   <title>Sapper project template</title>
 </svelte:head>
 
+<section>
+  <div class="form-control">
+    <label class="label cursor-pointer">
+      <span class="label-text">Use relative time</span>
+      <input
+        type="checkbox"
+        class="toggle"
+        checked={$UIState.useRelativeTime}
+        on:change={function ({ target }) {
+          UIState.update((v) => ({ ...v, useRelativeTime: target["checked"] }));
+        }}
+      />
+    </label>
+  </div>
+</section>
+
 <div class="filters">
   <div>Payload Filters</div>
   {#each types as code}
-    <span
+    <button
+      class="btn"
       on:click={() => toggleCode(code)}
-      class:active={activeTypes.includes(code)}>{code}</span
+      class:btn-accent={activeTypes.includes(code)}>{code}</button
     >
   {/each}
-</div>
-
-{#each messages.filter(({ code }) => activeTypes.includes(code)) as data}
-  <Row {data} />
-{/each}
-
-
-
-<div class="card w-96 bg-base-100 shadow-xl">
-  <figure><img src="https://placeimg.com/400/225/arch" alt="Shoes" /></figure>
-  <div class="card-body">
-    <h2 class="card-title">Shoes!</h2>
-    <p>If a dog chews shoes whose shoes does he choose?</p>
-    <div class="card-actions justify-end">
-      <button class="btn btn-primary">Buy Now</button>
-    </div>
-  </div>
+  <div class="divider" />
 </div>
 
 
-<div class="form-control">
-  <label class="label">
-    <span class="label-text">Your Email</span>
-  </label>
-  <label class="input-group">
-    <span>Email</span>
-    <input type="text" placeholder="info@site.com" class="input input-bordered" />
-  </label>
+<div class="overflow-x-auto">
+  <table class="table w-full">
+    <!-- head -->
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Code</th>
+        <th>Payload</th>
+      </tr>
+    </thead>
+    <tbody>
+      {#each messages.filter(({ code }) => activeTypes.includes(code)) as data}
+        <Row {data} />
+      {/each}
+    </tbody>
+  </table>
 </div>
-
-
 
 <style lang="scss">
-  div.filters {
-    span {
-      & .active {
-        font-weight: bold;
-        color: red;
-      }
-    }
-  }
-
   h1,
   figure,
   p {

@@ -6,6 +6,7 @@ import url from '@rollup/plugin-url';
 import svelte from 'rollup-plugin-svelte';
 import babel from '@rollup/plugin-babel';
 import { terser } from 'rollup-plugin-terser';
+import postcss from 'rollup-plugin-postcss'
 import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
 import json from '@rollup/plugin-json'
@@ -19,6 +20,7 @@ const legacy = !!process.env.SAPPER_LEGACY_BUILD;
 const onwarn = (warning, onwarn) =>
 	(warning.code === 'MISSING_EXPORT' && /'preload'/.test(warning.message)) ||
 	(warning.code === 'CIRCULAR_DEPENDENCY' && /[/\\]@sapper[/\\]/.test(warning.message)) ||
+	// (warning.code === 'CIRCULAR_DEPENDENCY' && /svelte-json-tree/.test(warning.message)) ||
 	(warning.code === 'THIS_IS_UNDEFINED') ||
 	onwarn(warning);
 
@@ -39,8 +41,9 @@ export default {
 				compilerOptions: {
 					dev,
 					hydratable: true
-				}
+				},
 			}),
+			postcss(),
 			url({
 				sourceDir: path.resolve(__dirname, 'src/node_modules/images'),
 				publicPath: '/client/'
@@ -91,7 +94,7 @@ export default {
 				},
 			}),
 			svelte({
-				preprocess: sveltePreprocess({ sourceMap: dev, postcss: true }),
+				preprocess: sveltePreprocess({ sourceMap: dev }),
 				compilerOptions: {
 					dev,
 					generate: 'ssr',
