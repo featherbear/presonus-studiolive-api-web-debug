@@ -8,12 +8,12 @@ import { Server as SocketIOServer } from 'socket.io'
 import { Client as SLAPI } from 'presonus-studiolive-api'
 import type Payload from './components/payload/types/Payload';
 
-const { PORT, NODE_ENV } = process.env;
+const { PORT, HOST, CONSOLE_HOST, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
 
 
-const app = express() // Express server
-const server = new HTTPServer(app) // HTTP server
+const app = express()
+const server = new HTTPServer(app)
 const io = new SocketIOServer(server, { path: '/p' })
 
 app
@@ -23,14 +23,14 @@ app
         sapper.middleware()
     )
 
-let client = new SLAPI("192.168.0.19")
+let client = new SLAPI({ host: CONSOLE_HOST ?? "192.168.0.22" })
 
 client.on('data', (data) => {
     let payload: Payload = { code: data.code, data: JSON.stringify(data), timestamp: new Date().getTime() }
     io.emit('p', payload)
 })
 
-server.listen(Number(PORT), '0.0.0.0', () => {
+server.listen(Number(PORT), HOST ?? '0.0.0.0', () => {
     console.log("Web server started")
     client.connect().then(() => {
         console.log("Connected to StudioLive console")
