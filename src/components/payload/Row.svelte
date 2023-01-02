@@ -6,6 +6,9 @@
   import UIState from "../UIState";
   import dayjs from "../dayjs";
   import PayloadFormatter from "./PayloadFormatter";
+  import ArrayBufferToHex from "./ArrayBufferToHex";
+
+  console.log(data);
 </script>
 
 <tr class="hover">
@@ -21,5 +24,8 @@
   </td>
   <td>
     <pre>{PayloadFormatter(data)}</pre>
+  </td>
+  <td>
+    <pre>{ArrayBufferToHex(data.raw)}</pre>
   </td>
 </tr>

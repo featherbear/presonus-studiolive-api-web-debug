@@ -23,11 +23,21 @@ app
         sapper.middleware()
     )
 
-let client = new SLAPI({ host: CONSOLE_HOST ?? "192.168.0.22" }, {logLevel: 'trace'})
+let client = new SLAPI({ host: CONSOLE_HOST ?? "192.168.0.22" }, { logLevel: 'trace' })
 
-client.on('data', (data) => {
-    let payload: Payload = { code: data.code, data: JSON.stringify(data.data), timestamp: new Date().getTime() }
-    io.emit('p', payload)
+// client.on('data', (data) => {
+//     let payload: Payload = { code: data.code, data: JSON.stringify(data.data), timestamp: new Date().getTime() }
+//     io.emit('p', payload)
+// })
+
+client.on(<any>'fragment', (resp: any) => {
+    io.emit('p', <Payload>{
+        code: resp.code,
+        fragments: resp.fragments,
+        data: resp.data,
+        raw: resp.raw,
+        timestamp: new Date().getTime()
+    })
 })
 
 server.listen(Number(PORT), HOST ?? '0.0.0.0', () => {

@@ -1,3 +1,4 @@
+import ArrayBufferToHex from "./ArrayBufferToHex";
 import type Payload from "./types/Payload";
 
 export default function (payload: Payload) {
@@ -11,6 +12,13 @@ export default function (payload: Payload) {
         }
     }
 
-    return JSON.stringify(payload.data, null, 4)
-    // return payload.data
+    // FIXME: TODO: Integrate with annotation maps
+
+    return JSON.stringify(payload.data, (key, value) => {
+        if (value instanceof ArrayBuffer) {
+            return ["Hex(", ArrayBufferToHex(value).join(" "), ")"].join("")
+        }
+
+        return value
+    }, 4)
 }

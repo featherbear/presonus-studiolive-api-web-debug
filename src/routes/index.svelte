@@ -15,15 +15,9 @@
     );
 
     console.log("Ready");
-    client.on("p", function (data: Payload) {
-      updateType(data.code);
-      messages = [
-        {
-          ...data,
-          data: JSON.parse(data.data),
-        },
-        ...messages,
-      ];
+    client.on("p", function (payload: Payload) {
+      updateType(payload.code);
+      messages = [{ ...payload }, ...messages];
     });
   });
 
@@ -76,7 +70,6 @@
   <div class="divider" />
 </div>
 
-
 <div class="overflow-x-auto">
   <table class="table w-full">
     <!-- head -->
@@ -84,7 +77,8 @@
       <tr>
         <th>Timestamp</th>
         <th>Code</th>
-        <th>Payload</th>
+        <th>Data</th>
+        <th>Raw</th>
       </tr>
     </thead>
     <tbody>
